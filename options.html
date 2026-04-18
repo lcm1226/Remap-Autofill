@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remap Key &amp; Advanced AutoFill Manager</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Manager</p>
+        <h1>Remap Key &amp; Advanced AutoFill</h1>
+        <p class="intro">필드 선택은 팝업이나 `Ctrl+Shift+Y`로 시작하고, 여기서 규칙을 길게 관리하세요.</p>
+      </div>
+      <div class="hero-actions">
+        <button id="refresh" class="secondary" type="button">새로고침</button>
+      </div>
+    </header>
+
+    <section id="draft-card" class="panel hidden">
+      <p class="eyebrow">Pending Selection</p>
+      <h2>방금 선택한 필드</h2>
+      <p id="draft-descriptor" class="card-title"></p>
+      <p id="draft-selector" class="mono small"></p>
+      <div class="inline-actions">
+        <button id="use-draft" class="primary" type="button">자동입력 폼에 채우기</button>
+        <button id="clear-draft" class="ghost" type="button">비우기</button>
+      </div>
+    </section>
+
+    <section class="panel panel-grid">
+      <div>
+        <p class="eyebrow">Autofill</p>
+        <h2>자동입력 규칙 편집</h2>
+        <form id="autofill-form" class="form-grid">
+          <input id="autofill-id" type="hidden">
+
+          <label class="field">
+            <span>이름</span>
+            <input id="autofill-label" type="text" placeholder="예: 대한항공 탑승객 성">
+          </label>
+
+          <label class="field">
+            <span>URL 패턴</span>
+            <input id="autofill-url-pattern" type="text" placeholder="예: *://kr.koreanair.com/*">
+          </label>
+
+          <label class="field field-wide">
+            <span>Selector</span>
+            <input id="autofill-selector" type="text" placeholder="팝업에서 필드를 선택하면 자동으로 채울 수 있습니다.">
+          </label>
+
+          <label class="field field-wide">
+            <span>입력할 값</span>
+            <textarea id="autofill-value" rows="4" placeholder="예: lcm1226@gmail.com"></textarea>
+          </label>
+
+          <label class="toggle">
+            <input id="autofill-enabled" type="checkbox" checked>
+            <span>활성화</span>
+          </label>
+
+          <label class="toggle">
+            <input id="autofill-auto-apply" type="checkbox" checked>
+            <span>페이지 로드 시 자동 적용</span>
+          </label>
+
+          <div class="inline-actions field-wide">
+            <button class="primary" type="submit">저장</button>
+            <button id="reset-autofill-form" class="ghost" type="button">폼 초기화</button>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <p class="eyebrow">Stored Rules</p>
+        <h2>자동입력 목록</h2>
+        <div id="autofill-list" class="rule-list empty-state">아직 자동입력 규칙이 없습니다.</div>
+      </div>
+    </section>
+
+    <section class="panel panel-grid">
+      <div>
+        <p class="eyebrow">Key Remap</p>
+        <h2>키 리맵 규칙 편집</h2>
+        <form id="key-remap-form" class="form-grid">
+          <input id="key-id" type="hidden">
+
+          <label class="field">
+            <span>이름</span>
+            <input id="key-label" type="text" placeholder="예: Gmail 삭제 키">
+          </label>
+
+          <label class="field">
+            <span>URL 패턴</span>
+            <input id="key-url-pattern" type="text" placeholder="예: *://mail.google.com/*">
+          </label>
+
+          <label class="field">
+            <span>원래 키</span>
+            <input id="from-key" type="text" placeholder="예: Delete">
+          </label>
+
+          <label class="field">
+            <span>바꿀 키</span>
+            <input id="to-key" type="text" placeholder="예: Shift+3">
+          </label>
+
+          <label class="toggle field-wide">
+            <input id="key-enabled" type="checkbox" checked>
+            <span>활성화</span>
+          </label>
+
+          <div class="inline-actions field-wide">
+            <button class="primary" type="submit">저장</button>
+            <button id="add-gmail-preset" class="secondary" type="button">Gmail preset 추가</button>
+            <button id="reset-key-form" class="ghost" type="button">폼 초기화</button>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <p class="eyebrow">Stored Rules</p>
+        <h2>키 리맵 목록</h2>
+        <div id="key-remap-list" class="rule-list empty-state">아직 키 리맵 규칙이 없습니다.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">Transfer</p>
+      <h2>기기 간 설정 내보내기 / 가져오기</h2>
+      <p class="intro">브라우저 동기화 없이도 설정 JSON을 내보내고, 다른 기기에서 그대로 붙여넣어 가져올 수 있습니다.</p>
+      <div class="form-grid">
+        <label class="field field-wide">
+          <span>설정 JSON</span>
+          <textarea id="sync-code" rows="7" placeholder="여기에 내보낸 설정 JSON을 복사하거나, 다른 기기에서 받은 JSON을 붙여넣으세요."></textarea>
+        </label>
+        <div class="inline-actions field-wide">
+          <button id="export-code" class="primary" type="button">설정 내보내기</button>
+          <button id="copy-code" class="secondary" type="button">JSON 복사</button>
+          <button id="import-code" class="ghost" type="button">설정 가져오기</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p id="status" class="status"></p>
+    </footer>
+  </main>
+
+  <script src="options.js"></script>
+</body>
+</html>

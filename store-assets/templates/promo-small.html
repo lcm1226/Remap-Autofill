@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Small Promo</title>
+  <style>
+    :root {
+      --cream: #f6efe5;
+      --teal: #0f766e;
+      --amber: #f0a54e;
+      --ink: #211912;
+      --glass: rgba(255, 255, 255, 0.72);
+      font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.58), transparent 34%),
+        radial-gradient(circle at 82% 18%, rgba(15, 118, 110, 0.22), transparent 24%),
+        linear-gradient(135deg, #fff8ef 0%, var(--cream) 56%, #eadcc7 100%);
+    }
+
+    .artboard {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tile {
+      position: absolute;
+      left: 44px;
+      top: 40px;
+      width: 132px;
+      height: 132px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.34), transparent 34%),
+        linear-gradient(135deg, #0f766e 0%, #16988d 54%, var(--amber) 100%);
+      box-shadow: 0 24px 42px rgba(11, 93, 87, 0.26);
+    }
+
+    .tile::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border: 9px solid rgba(255, 255, 255, 0.95);
+      border-radius: 30px;
+      box-sizing: border-box;
+    }
+
+    .tile::after {
+      content: "";
+      position: absolute;
+      right: 22px;
+      bottom: 22px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(32, 24, 19, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    }
+
+    .panel,
+    .mini-card {
+      position: absolute;
+      border: 1px solid rgba(32, 24, 19, 0.08);
+      background: var(--glass);
+      box-shadow: 0 16px 28px rgba(72, 52, 31, 0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    .panel {
+      right: 34px;
+      top: 34px;
+      width: 206px;
+      height: 212px;
+      border-radius: 30px;
+    }
+
+    .mini-card {
+      border-radius: 22px;
+    }
+
+    .mini-card.a {
+      left: 184px;
+      top: 48px;
+      width: 122px;
+      height: 84px;
+      transform: rotate(-8deg);
+    }
+
+    .mini-card.b {
+      left: 160px;
+      bottom: 40px;
+      width: 148px;
+      height: 94px;
+      transform: rotate(6deg);
+    }
+
+    .mini-card.c {
+      right: 62px;
+      bottom: 28px;
+      width: 180px;
+      height: 78px;
+    }
+
+    .line, .pill, .dot {
+      position: absolute;
+      border-radius: 999px;
+    }
+
+    .dot {
+      width: 18px;
+      height: 18px;
+      background: linear-gradient(135deg, var(--amber), #f8c987);
+    }
+
+    .panel .dot {
+      left: 24px;
+      top: 26px;
+    }
+
+    .line {
+      height: 10px;
+      background: rgba(15, 118, 110, 0.18);
+    }
+
+    .panel .line.one {
+      left: 52px;
+      top: 30px;
+      width: 120px;
+    }
+
+    .panel .line.two {
+      left: 24px;
+      top: 76px;
+      width: 156px;
+    }
+
+    .panel .line.three {
+      left: 24px;
+      top: 104px;
+      width: 128px;
+    }
+
+    .pill {
+      background: rgba(15, 118, 110, 0.14);
+      height: 36px;
+      width: 156px;
+      left: 24px;
+      bottom: 28px;
+    }
+
+    .mini-card .line {
+      left: 16px;
+      right: 16px;
+      width: auto;
+      height: 8px;
+      background: rgba(32, 24, 19, 0.08);
+    }
+
+    .mini-card .line:nth-child(1) { top: 18px; }
+    .mini-card .line:nth-child(2) { top: 38px; }
+    .mini-card .line:nth-child(3) { top: 58px; width: 58%; }
+
+    .swirl {
+      position: absolute;
+      inset: auto auto 30px 36px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 12px solid rgba(15, 118, 110, 0.14);
+      border-right-color: rgba(240, 165, 78, 0.54);
+      border-top-color: rgba(255, 255, 255, 0.42);
+      transform: rotate(18deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="artboard">
+    <div class="tile"></div>
+    <div class="mini-card a">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <div class="mini-card b">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <div class="panel">
+      <div class="dot"></div>
+      <div class="line one"></div>
+      <div class="line two"></div>
+      <div class="line three"></div>
+      <div class="pill"></div>
+    </div>
+    <div class="mini-card c">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <div class="swirl"></div>
+  </div>
+</body>
+</html>

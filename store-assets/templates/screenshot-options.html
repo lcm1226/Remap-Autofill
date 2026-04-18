@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rules Manager Screenshot</title>
+  <style>
+    :root {
+      --bg: #f5efe4;
+      --panel: rgba(255, 255, 255, 0.92);
+      --border: rgba(82, 59, 38, 0.14);
+      --text: #211912;
+      --muted: #6f5c4c;
+      --accent: #0f766e;
+      --accent-strong: #0b5d57;
+      --accent-soft: rgba(15, 118, 110, 0.12);
+      --danger-soft: rgba(180, 35, 24, 0.12);
+      --shadow: 0 28px 56px rgba(72, 52, 31, 0.12);
+      font-family: "Segoe UI Variable", "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.15), transparent 32%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .app {
+      width: 100%;
+      height: 100%;
+      padding: 30px;
+    }
+
+    .hero, .grid, .actions {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+    }
+
+    .hero {
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent-strong);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, p { margin: 0; }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 40px;
+      line-height: 1.05;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+      font-size: 24px;
+    }
+
+    .intro, .muted, .small {
+      color: var(--muted);
+    }
+
+    .button {
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .button.secondary {
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .panel {
+      flex: 1;
+      padding: 20px;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .input, .toggle, .card {
+      border: 1px solid rgba(82, 59, 38, 0.1);
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 18px;
+    }
+
+    .input {
+      height: 50px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .toggle {
+      height: 50px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle .dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.92);
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      padding: 14px 16px;
+      background: rgba(248, 251, 250, 0.92);
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 17px;
+    }
+
+    .mono {
+      font-family: Consolas, "SFMono-Regular", monospace;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      margin-top: 10px;
+      justify-content: flex-start;
+    }
+
+    .button.ghost {
+      background: rgba(17, 24, 39, 0.06);
+      color: var(--text);
+    }
+
+    .button.danger {
+      background: var(--danger-soft);
+      color: #b42318;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: var(--shadow);
+    }
+
+    .textarea {
+      margin-top: 14px;
+      height: 140px;
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(82, 59, 38, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Manager</p>
+        <h1>Remap Key &amp; Advanced AutoFill</h1>
+        <p class="intro">자동입력 규칙, 드롭다운 값, 키 리맵, 설정 JSON 내보내기까지 한 곳에서 관리합니다.</p>
+      </div>
+      <div class="button secondary">새로고침</div>
+    </div>
+
+    <div class="grid">
+      <section class="panel">
+        <p class="eyebrow">Autofill</p>
+        <h2>자동입력 규칙 편집</h2>
+        <div class="form-grid">
+          <div class="input">*://www.gov.kr/*</div>
+          <div class="input">통신사</div>
+          <div class="input wide">select[name="carrier"]</div>
+          <div class="input wide">SKT</div>
+          <div class="toggle"><span class="dot"></span> 규칙 사용</div>
+          <div class="toggle"><span class="dot"></span> 페이지 로드시 자동 적용</div>
+        </div>
+        <div class="actions">
+          <div class="button primary">저장</div>
+          <div class="button ghost">초기화</div>
+        </div>
+        <div class="stack" style="margin-top:18px;">
+          <div class="card">
+            <strong>이름</strong>
+            <div class="small">이충민</div>
+            <div class="mono">input[name="userName"]</div>
+            <div class="mono">*://www.gov.kr/*</div>
+          </div>
+          <div class="card">
+            <strong>생년월일</strong>
+            <div class="small">19910101</div>
+            <div class="mono">input[name="birthDate"]</div>
+            <div class="mono">*://www.gov.kr/*</div>
+          </div>
+          <div class="card">
+            <strong>통신사</strong>
+            <div class="small">SKT</div>
+            <div class="mono">select[name="carrier"]</div>
+            <div class="mono">*://www.gov.kr/*</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <p class="eyebrow">Key Remap</p>
+        <h2>키 리맵 규칙 편집</h2>
+        <div class="form-grid">
+          <div class="input">*://mail.google.com/*</div>
+          <div class="input">Gmail Delete -&gt; Shift+3</div>
+          <div class="input">Delete</div>
+          <div class="input">Shift+3</div>
+          <div class="toggle wide"><span class="dot"></span> 규칙 사용</div>
+        </div>
+        <div class="actions">
+          <div class="button primary">저장</div>
+          <div class="button secondary">Gmail preset 추가</div>
+        </div>
+        <div class="stack" style="margin-top:18px;">
+          <div class="card">
+            <strong>Gmail Delete -&gt; Shift+3</strong>
+            <div class="small">Delete -&gt; Shift+3</div>
+            <div class="mono">*://mail.google.com/*</div>
+          </div>
+          <div class="card">
+            <strong>사내 메신저 이동</strong>
+            <div class="small">Alt+ArrowDown -&gt; j</div>
+            <div class="mono">*://chat.example.com/*</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="footer">
+      <p class="eyebrow">Settings JSON</p>
+      <h2>내보내기 / 가져오기</h2>
+      <div class="actions">
+        <div class="button secondary">설정 내보내기</div>
+        <div class="button ghost">클립보드 복사</div>
+        <div class="button primary">설정 가져오기</div>
+      </div>
+      <div class="textarea">{
+  "version": 1,
+  "autofillRules": [
+    { "label": "이름", "selector": "input[name='userName']" }
+  ],
+  "keyRemapRules": [
+    { "label": "Gmail Delete -> Shift+3", "fromKey": "Delete", "toKey": "Shift+3" }
+  ]
+}</div>
+    </section>
+  </div>
+</body>
+</html>

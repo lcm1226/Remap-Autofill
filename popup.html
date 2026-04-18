@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remap Key &amp; Advanced AutoFill</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="eyebrow">Remap Key &amp; Advanced AutoFill</p>
+      <h1>페이지별 자동입력과 키 리맵</h1>
+      <p class="intro">입력칸과 드롭다운은 직접 집어서 저장하고, 키는 URL 조건에 따라 다시 매핑합니다.</p>
+    </header>
+
+    <section class="panel panel-compact">
+      <div class="stack">
+        <div>
+          <p class="section-label">현재 탭</p>
+          <p id="active-tab-url" class="mono small">탭 정보를 불러오는 중...</p>
+        </div>
+        <div>
+          <button id="start-picker" class="secondary" type="button">필드 선택 시작</button>
+          <p class="hint-text">단축키 `Ctrl+Shift+Y`로도 시작할 수 있습니다.</p>
+        </div>
+        <div id="draft-card" class="draft-card hidden">
+          <p class="section-label">방금 선택한 필드</p>
+          <p id="draft-descriptor" class="small"></p>
+          <p id="draft-selector" class="mono xsmall"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-label">자동입력 빠른 저장</p>
+          <h2>Selector 기반 입력칸/드롭다운</h2>
+        </div>
+        <button id="apply-now" class="secondary" type="button">저장된 규칙 지금 적용</button>
+      </div>
+
+      <form id="autofill-form" class="form-grid">
+        <label class="field">
+          <span>URL 패턴</span>
+          <input id="autofill-url-pattern" type="text" placeholder="예: *://kr.koreanair.com/*">
+        </label>
+
+        <label class="field">
+          <span>필드 이름</span>
+          <input id="autofill-label" type="text" placeholder="예: 탑승객 이름">
+        </label>
+
+        <label class="field field-wide">
+          <span>선택된 selector</span>
+          <input id="autofill-selector" type="text" placeholder="필드를 선택하면 자동으로 채워집니다.">
+        </label>
+
+        <label class="field field-wide">
+          <span>자동입력 값</span>
+          <textarea id="autofill-value" rows="3" placeholder="예: 이충민"></textarea>
+        </label>
+
+        <label class="toggle">
+          <input id="autofill-enabled" type="checkbox" checked>
+          <span>이 규칙 활성화</span>
+        </label>
+
+        <label class="toggle">
+          <input id="autofill-auto-apply" type="checkbox" checked>
+          <span>페이지 열 때 자동 적용</span>
+        </label>
+
+        <div class="actions field-wide">
+          <button class="primary" type="submit">자동입력 규칙 저장</button>
+          <button id="clear-draft" class="ghost" type="button">선택 필드 비우기</button>
+        </div>
+      </form>
+
+      <div class="list-block">
+        <p class="section-label">현재 탭과 맞는 자동입력 규칙</p>
+        <div id="autofill-list" class="rule-list empty-state">아직 저장된 규칙이 없습니다.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-label">키 리맵</p>
+          <h2>URL 조건별 단축키 치환</h2>
+        </div>
+        <button id="add-gmail-preset" class="secondary" type="button">Gmail Delete preset 추가</button>
+      </div>
+
+      <form id="key-remap-form" class="form-grid">
+        <label class="field">
+          <span>URL 패턴</span>
+          <input id="key-url-pattern" type="text" placeholder="예: *://mail.google.com/*">
+        </label>
+
+        <label class="field">
+          <span>규칙 이름</span>
+          <input id="key-label" type="text" placeholder="예: Gmail 삭제 키">
+        </label>
+
+        <label class="field">
+          <span>원래 키</span>
+          <input id="from-key" type="text" placeholder="예: Delete">
+        </label>
+
+        <label class="field">
+          <span>바꿀 키</span>
+          <input id="to-key" type="text" placeholder="예: Shift+3">
+        </label>
+
+        <label class="toggle field-wide">
+          <input id="key-enabled" type="checkbox" checked>
+          <span>이 키 리맵 활성화</span>
+        </label>
+
+        <div class="actions field-wide">
+          <button class="primary" type="submit">키 리맵 저장</button>
+        </div>
+      </form>
+
+      <div class="list-block">
+        <p class="section-label">현재 탭과 맞는 키 리맵 규칙</p>
+        <div id="key-remap-list" class="rule-list empty-state">아직 저장된 리맵 규칙이 없습니다.</div>
+      </div>
+    </section>
+
+    <section class="panel panel-compact">
+      <div class="actions">
+        <button id="open-options" class="secondary" type="button">전체 관리자 열기</button>
+        <p id="status" class="status"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

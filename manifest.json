@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "Remap Key & Advanced AutoFill",
+  "short_name": "Remap & AutoFill",
+  "version": "1.0.0",
+  "description": "Automate repeated website actions with exact-field autofill rules and URL-based key remaps.",
+  "minimum_chrome_version": "114",
+  "incognito": "not_allowed",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "homepage_url": "https://github.com/lcm1226/Remap-Autofill",
+  "icons": {
+    "16": "store-assets/icons/icon-16.png",
+    "32": "store-assets/icons/icon-32.png",
+    "48": "store-assets/icons/icon-48.png",
+    "128": "store-assets/icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Remap Key & Advanced AutoFill",
+    "default_icon": {
+      "16": "store-assets/icons/icon-16.png",
+      "32": "store-assets/icons/icon-32.png"
+    }
+  },
+  "options_page": "options.html",
+  "commands": {
+    "start-field-picker": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Start the field picker on the current page"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*/*",
+        "http://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

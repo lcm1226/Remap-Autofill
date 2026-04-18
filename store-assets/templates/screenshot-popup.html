@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Save Popup Screenshot</title>
+  <style>
+    :root {
+      --bg: #f5efe4;
+      --panel: rgba(255, 255, 255, 0.92);
+      --border: rgba(82, 59, 38, 0.14);
+      --text: #211912;
+      --muted: #6f5c4c;
+      --accent: #0f766e;
+      --accent-strong: #0b5d57;
+      --accent-soft: rgba(15, 118, 110, 0.12);
+      --shadow: 0 24px 54px rgba(72, 52, 31, 0.16);
+      font-family: "Segoe UI Variable", "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 30%),
+        linear-gradient(180deg, #f9f4eb 0%, var(--bg) 100%);
+    }
+
+    .scene {
+      width: 100%;
+      height: 100%;
+      padding: 34px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 28px;
+    }
+
+    .browser {
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid rgba(82, 59, 38, 0.1);
+    }
+
+    .toolbar {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 18px;
+      background: rgba(247, 239, 228, 0.95);
+      border-bottom: 1px solid rgba(82, 59, 38, 0.08);
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(82, 59, 38, 0.18);
+    }
+
+    .address {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .page {
+      position: relative;
+      height: calc(100% - 56px);
+      padding: 32px;
+    }
+
+    .page h2 {
+      margin: 0 0 10px;
+      font-size: 40px;
+    }
+
+    .page p {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 640px;
+    }
+
+    .field {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(82, 59, 38, 0.08);
+      box-shadow: 0 14px 28px rgba(72, 52, 31, 0.08);
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .box {
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(246, 241, 232, 0.9);
+      border: 1px solid rgba(82, 59, 38, 0.1);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      font-size: 18px;
+    }
+
+    .highlight {
+      outline: 4px solid rgba(15, 118, 110, 0.75);
+      outline-offset: 4px;
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      right: -10px;
+      top: -14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 12px 20px rgba(15, 118, 110, 0.25);
+    }
+
+    .popup {
+      align-self: center;
+      padding: 24px;
+      border-radius: 28px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent-strong);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h3, p { margin: 0; }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 28px;
+      line-height: 1.08;
+    }
+
+    .intro, .small {
+      color: var(--muted);
+    }
+
+    .panel {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border);
+    }
+
+    .mono {
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 13px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .input {
+      height: 46px;
+      padding: 0 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid rgba(82, 59, 38, 0.1);
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn.secondary {
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <section class="browser">
+      <div class="toolbar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="address">https://www.gov.kr/pass-login</div>
+      </div>
+      <div class="page">
+        <h2>본인인증 정보 입력</h2>
+        <p>입력칸과 드롭다운을 직접 집어서 정확한 자동입력 규칙을 저장합니다.</p>
+        <div class="grid">
+          <div class="field">
+            <label>이름</label>
+            <div class="box">이충민</div>
+          </div>
+          <div class="field">
+            <label>생년월일</label>
+            <div class="box">19910101</div>
+          </div>
+          <div class="field highlight">
+            <span class="badge">선택됨</span>
+            <label>통신사</label>
+            <div class="box">SKT</div>
+          </div>
+          <div class="field">
+            <label>휴대폰 번호</label>
+            <div class="box">11112222</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="popup">
+      <p class="eyebrow">Remap Key &amp; Advanced AutoFill</p>
+      <h1>페이지별 자동입력과 키 리맵</h1>
+      <p class="intro">선택한 필드를 바로 저장하고, URL 조건에 따라 키도 다시 매핑합니다.</p>
+
+      <div class="panel">
+        <p class="eyebrow">현재 탭</p>
+        <p class="mono">https://www.gov.kr/pass-login</p>
+      </div>
+
+      <div class="panel">
+        <p class="eyebrow">방금 선택한 필드</p>
+        <p style="font-weight:700;">통신사 드롭다운</p>
+        <p class="mono">select[name="carrier"]</p>
+      </div>
+
+      <div class="panel">
+        <p class="eyebrow">자동입력 빠른 저장</p>
+        <div class="form-grid">
+          <div class="input">*://www.gov.kr/*</div>
+          <div class="input">통신사</div>
+          <div class="input wide">select[name="carrier"]</div>
+          <div class="input wide">SKT</div>
+        </div>
+        <div class="buttons">
+          <div class="btn primary">규칙 저장</div>
+          <div class="btn secondary">지금 자동입력 실행</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>
