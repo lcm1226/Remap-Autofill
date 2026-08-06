@@ -1,1 +1,11 @@
-dist/
+node_modules/
+/dist/
+.pnpm-home/
+.pnpm/
+.pnpm-store/
+.pnpm-cache/
+.pnpm-state/
+.wrangler/
+.wrangler-config/
+tracking-service/cloudflare/.wrangler/
+tracking-service/cloudflare/dist/

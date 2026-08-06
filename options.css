@@ -8,6 +8,7 @@
   --accent: #0f766e;
   --accent-strong: #0b5d57;
   --accent-soft: rgba(15, 118, 110, 0.12);
+  --identity-emphasis-border: rgba(15, 118, 110, 0.42);
   --danger: #b42318;
   --danger-soft: rgba(180, 35, 24, 0.12);
   --shadow: 0 28px 56px rgba(72, 52, 31, 0.12);
@@ -145,6 +146,10 @@ h2 {
 }
 
 input[type="text"],
+input[type="url"],
+input[type="tel"],
+input[type="password"],
+select,
 textarea {
   width: 100%;
   padding: 12px 14px;
@@ -153,6 +158,135 @@ textarea {
   background: rgba(255, 255, 255, 0.9);
   color: var(--text);
   font: inherit;
+}
+
+.identity-profile-form,
+.identity-transfer-form {
+  margin-top: 16px;
+}
+
+.identity-subheading {
+  margin-top: 22px;
+  font-size: 16px;
+}
+
+.identity-form-help {
+  color: var(--muted);
+}
+
+.identity-form-help {
+  margin-top: 6px;
+}
+
+.identity-profile-form-status {
+  min-height: 20px;
+  margin: 0 2px;
+}
+
+.identity-profile-form .field.field-invalid > span {
+  color: var(--danger);
+}
+
+.identity-profile-form .field.field-invalid > input,
+.identity-profile-form .field.field-invalid > select {
+  border-color: var(--danger);
+  outline-color: var(--danger);
+}
+
+.identity-privacy-note {
+  margin-bottom: 16px;
+}
+
+.identity-profile-pane {
+  min-width: 0;
+}
+
+.identity-profile-list-scrollable {
+  max-height: min(560px, 60vh);
+  padding-right: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.identity-profile-divider {
+  height: 2px;
+  margin: 2px 4px;
+  background: var(--identity-emphasis-border);
+}
+
+.identity-profile-card-active {
+  border: 2px solid var(--identity-emphasis-border);
+}
+
+.profile-detail-row {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.profile-summary {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.profile-saved-date {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.active-profile-chip {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.open-signal-form {
+  margin-top: 16px;
+}
+
+.consent-toggle {
+  align-items: flex-start;
+}
+
+.consent-toggle input {
+  margin-top: 3px;
+}
+
+.open-signal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.signal-chip {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: rgba(111, 92, 76, 0.1);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.signal-chip.detected {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
 }
 
 textarea {

@@ -4,7 +4,11 @@ const DRAFT_KEY = "remapKeyAdvancedAutoFillDraft";
 const state = {
   activeTab: null,
   settings: getDefaultSettings(),
-  draft: null
+  draft: null,
+  identity: {
+    config: IdentityAutofillCore.getDefaultConfig(),
+    profiles: []
+  }
 };
 
 const activeTabUrl = document.querySelector("#active-tab-url");
@@ -22,6 +26,9 @@ document.querySelector("#open-options").addEventListener("click", () => chrome.r
 document.querySelector("#add-gmail-preset").addEventListener("click", handleAddGmailPreset);
 document.querySelector("#autofill-form").addEventListener("submit", handleSaveAutofillRule);
 document.querySelector("#key-remap-form").addEventListener("submit", handleSaveKeyRemapRule);
+document.querySelector("#identity-active-profile").addEventListener("change", handleIdentityProfileChange);
+document.querySelector("#apply-identity-now").addEventListener("click", handleApplyIdentityNow);
+document.querySelector("#manage-identity").addEventListener("click", () => chrome.runtime.openOptionsPage());
 autofillList.addEventListener("click", handleRuleListClick);
 keyRemapList.addEventListener("click", handleRuleListClick);
 
@@ -39,24 +46,84 @@ async function init() {
 }
 
 async function loadState() {
-  const [tabs, synced, local] = await Promise.all([
+  const [tabs, synced, local, identityResponse] = await Promise.all([
     chrome.tabs.query({ active: true, currentWindow: true }),
     chrome.storage.sync.get(SETTINGS_KEY),
-    chrome.storage.local.get(DRAFT_KEY)
+    chrome.storage.local.get(DRAFT_KEY),
+    chrome.runtime.sendMessage({ type: "IDENTITY_GET_STATE" })
   ]);
 
   state.activeTab = tabs[0] || null;
   state.settings = normalizeSettings(synced[SETTINGS_KEY]);
   state.draft = local[DRAFT_KEY] || null;
+  if (identityResponse?.ok) {
+    state.identity = {
+      config: identityResponse.config,
+      profiles: identityResponse.profiles
+    };
+  }
 }
 
 function render() {
   const pageUrl = state.activeTab?.url || "일반 웹페이지에서 사용하세요.";
   activeTabUrl.textContent = pageUrl;
   renderDraft();
+  renderIdentityQuickActions();
   prefillForms();
   renderAutofillList();
   renderKeyRemapList();
+}
+
+function renderIdentityQuickActions() {
+  const { config, profiles } = state.identity;
+  const select = document.querySelector("#identity-active-profile");
+  select.innerHTML = profiles.length
+    ? profiles.map((profile) => {
+      return `<option value="${escapeHtml(profile.id)}">${escapeHtml(profile.label || profile.name)}</option>`;
+    }).join("")
+    : '<option value="">저장된 정보 없음</option>';
+  select.value = config.activeProfileId || "";
+  document.querySelector("#apply-identity-now").disabled = !config.activeProfileId;
+}
+
+async function handleIdentityProfileChange(event) {
+  const response = await chrome.runtime.sendMessage({
+    type: "IDENTITY_SELECT_PROFILE",
+    id: event.target.value
+  });
+
+  if (!response?.ok) {
+    setStatus(response?.error || "저장된 본인인증 정보를 선택하지 못했습니다.", true);
+    return;
+  }
+
+  state.identity = {
+    config: response.config,
+    profiles: response.profiles
+  };
+  renderIdentityQuickActions();
+  setStatus("사용할 본인인증 정보를 변경했습니다.");
+}
+
+async function handleApplyIdentityNow() {
+  if (!state.activeTab?.id) {
+    setStatus("활성 탭을 찾지 못했습니다.", true);
+    return;
+  }
+
+  try {
+    const response = await chrome.tabs.sendMessage(state.activeTab.id, { type: "IDENTITY_APPLY_NOW" });
+
+    if (!response?.ok) {
+      setStatus(response?.error || "현재 인증창에 본인인증 정보를 채우지 못했습니다.", true);
+      return;
+    }
+
+    const count = response.result?.applied?.length || 0;
+    setStatus(count > 0 ? `${count}개 종류의 본인인증 정보를 채웠습니다.` : "현재 인증창에서 채울 수 있는 빈 입력란을 찾지 못했습니다.");
+  } catch (error) {
+    setStatus("휴대폰 본인인증 창에서만 사용할 수 있습니다.", true);
+  }
 }
 
 function renderDraft() {

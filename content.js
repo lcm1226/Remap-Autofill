@@ -1,6 +1,7 @@
 const SETTINGS_KEY = "remapKeyAdvancedAutoFillSettings";
 const AUTO_APPLY_RETRY_LIMIT = 12;
 const AUTO_APPLY_RETRY_DELAY_MS = 700;
+const AUTO_APPLY_MUTATION_DELAY_MS = 150;
 const SHIFTED_CHAR_BY_DIGIT = {
   "0": ")",
   "1": "!",
@@ -74,6 +75,7 @@ const pickerState = {
 
 let settingsCache = getDefaultSettings();
 let syntheticDispatchDepth = 0;
+let autoApplyMutationTimer = null;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "START_PICKER") {
@@ -104,7 +106,43 @@ async function bootstrap() {
   const stored = await chrome.storage.sync.get(SETTINGS_KEY);
   settingsCache = normalizeSettings(stored[SETTINGS_KEY]);
   document.addEventListener("keydown", handleKeyRemap, true);
+  observeDynamicAutofillFields();
   await applyMatchingAutofill({ retry: true, manual: false });
+}
+
+function observeDynamicAutofillFields() {
+  const root = document.documentElement;
+
+  if (!root) {
+    return;
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    const hasNewFields = mutations.some((mutation) => {
+      return [...mutation.addedNodes].some((node) => {
+        if (!(node instanceof Element)) {
+          return false;
+        }
+
+        return node.matches("input, textarea, select")
+          || Boolean(node.querySelector("input, textarea, select"));
+      });
+    });
+
+    if (!hasNewFields) {
+      return;
+    }
+
+    window.clearTimeout(autoApplyMutationTimer);
+    autoApplyMutationTimer = window.setTimeout(() => {
+      applyMatchingAutofill({ retry: false, manual: false }).catch(() => {});
+    }, AUTO_APPLY_MUTATION_DELAY_MS);
+  });
+
+  observer.observe(root, {
+    childList: true,
+    subtree: true
+  });
 }
 
 async function applyMatchingAutofill({ retry, manual }) {

@@ -1,0 +1,33 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "keyremap-gmail-open-signal",
+  "main": "./worker.mjs",
+  "compatibility_date": "2026-08-06",
+  "workers_dev": true,
+  "minify": true,
+  "observability": {
+    "enabled": false
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "TRACKS",
+        "class_name": "OpenSignalTrack"
+      },
+      {
+        "name": "API_LIMITERS",
+        "class_name": "ApiRateLimiter"
+      }
+    ]
+  },
+  "exports": {
+    "OpenSignalTrack": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    },
+    "ApiRateLimiter": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  }
+}

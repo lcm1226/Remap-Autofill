@@ -151,6 +151,7 @@ h2 {
 }
 
 input[type="text"],
+select,
 textarea {
   width: 100%;
   padding: 11px 13px;
@@ -159,6 +160,16 @@ textarea {
   background: rgba(255, 255, 255, 0.9);
   color: var(--text);
   font: inherit;
+}
+
+.compact-toggle {
+  padding: 8px 10px;
+}
+
+.identity-quick-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 textarea {

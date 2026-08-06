@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Remap Key & Advanced AutoFill",
   "short_name": "Remap & AutoFill",
-  "version": "1.0.0",
-  "description": "Automate repeated website actions with exact-field autofill rules and URL-based key remaps.",
+  "version": "1.2.0",
+  "description": "Automate repeated website actions, remap keys, assist identity-verification forms, and add opt-in Gmail open signals.",
   "minimum_chrome_version": "114",
   "incognito": "not_allowed",
   "permissions": [
@@ -51,6 +51,33 @@
         "content.js"
       ],
       "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "css": [
+        "gmail-tracking.css"
+      ],
+      "js": [
+        "gmail-tracking.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://nice.checkplus.co.kr/*",
+        "https://pcc.siren24.com/*",
+        "https://safe.ok-name.co.kr/*",
+        "https://cert.mobile-ok.com/*"
+      ],
+      "js": [
+        "identity-profile.js",
+        "identity-adapters.js",
+        "identity-autofill.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
     }
   ]
 }
