@@ -28,6 +28,7 @@ const keyRemapList = document.querySelector("#key-remap-list");
 const openSignalHistory = document.querySelector("#open-signal-history");
 const identityProfileList = document.querySelector("#identity-profile-list");
 const identityProfileStatus = document.querySelector("#identity-profile-status");
+const identityTransferStatus = document.querySelector("#identity-transfer-status");
 const identityProfileForm = document.querySelector("#identity-profile-form");
 const identityValidatedFields = [
   "identity-name",
@@ -725,16 +726,25 @@ async function handleAddGmailPreset() {
 
 async function handleExportIdentityProfiles() {
   const passphrase = document.querySelector("#identity-export-passphrase").value;
+  const exportButton = document.querySelector("#export-identity-profiles");
+  setIdentityTransferStatus("");
 
   if (passphrase.length < 8) {
-    setStatus("내보내기 비밀번호는 8자 이상이어야 합니다.", true);
+    const message = "내보내기 비밀번호는 8자 이상이어야 합니다.";
+    setIdentityTransferStatus(message, true);
+    setStatus(message, true);
     return;
   }
 
   if (!state.identity.profiles.length) {
-    setStatus("내보낼 본인인증 정보가 없습니다.", true);
+    const message = "내보낼 본인인증 정보가 없습니다.";
+    setIdentityTransferStatus(message, true);
+    setStatus(message, true);
     return;
   }
+
+  exportButton.disabled = true;
+  setIdentityTransferStatus("본인인증 정보를 암호화하고 있습니다.");
 
   try {
     const encrypted = await IdentityAutofillTransfer.encrypt({
@@ -744,32 +754,56 @@ async function handleExportIdentityProfiles() {
       profiles: state.identity.profiles
     }, passphrase);
     document.querySelector("#identity-sync-code").value = JSON.stringify(encrypted, null, 2);
+    setIdentityTransferStatus("암호화된 JSON을 만들었습니다. ‘암호화 JSON 복사’를 누르세요.");
     setStatus("본인인증 정보를 암호화해 내보냈습니다.");
   } catch (error) {
-    setStatus("본인인증 정보를 암호화하지 못했습니다.", true);
+    const message = "본인인증 정보를 암호화하지 못했습니다. 이 브라우저의 암호화 기능을 확인하세요.";
+    setIdentityTransferStatus(message, true);
+    setStatus(message, true);
+  } finally {
+    exportButton.disabled = false;
   }
 }
 
 async function handleCopyIdentityProfiles() {
   const textarea = document.querySelector("#identity-sync-code");
+  setIdentityTransferStatus("");
 
   if (!textarea.value.trim()) {
-    setStatus("먼저 본인인증 정보를 암호화해 내보내세요.", true);
+    const message = "먼저 본인인증 정보를 암호화해 내보내세요.";
+    setIdentityTransferStatus(message, true);
+    setStatus(message, true);
     return;
   }
 
-  await navigator.clipboard.writeText(textarea.value);
-  setStatus("암호화된 본인인증 정보 JSON을 클립보드에 복사했습니다.");
+  try {
+    await copyTextToClipboard(textarea.value, textarea);
+    setIdentityTransferStatus("암호화된 JSON을 클립보드에 복사했습니다.");
+    setStatus("암호화된 본인인증 정보 JSON을 클립보드에 복사했습니다.");
+  } catch (error) {
+    textarea.focus();
+    textarea.select();
+    const message = "자동 복사가 차단됐습니다. 선택된 JSON을 Ctrl+C로 복사하세요.";
+    setIdentityTransferStatus(message, true);
+    setStatus(message, true);
+  }
 }
 
 async function handleImportIdentityProfiles() {
   const raw = document.querySelector("#identity-sync-code").value.trim();
   const passphrase = document.querySelector("#identity-export-passphrase").value;
+  const importButton = document.querySelector("#import-identity-profiles");
+  setIdentityTransferStatus("");
 
   if (!raw || passphrase.length < 8) {
-    setStatus("암호화된 JSON과 8자 이상의 비밀번호를 입력하세요.", true);
+    const message = "암호화된 JSON과 8자 이상의 비밀번호를 입력하세요.";
+    setIdentityTransferStatus(message, true);
+    setStatus(message, true);
     return;
   }
+
+  importButton.disabled = true;
+  setIdentityTransferStatus("암호화된 JSON을 확인하고 있습니다.");
 
   try {
     const envelope = JSON.parse(raw);
@@ -795,9 +829,14 @@ async function handleImportIdentityProfiles() {
     };
     resetIdentityProfileForm();
     renderIdentityProfiles();
+    setIdentityTransferStatus("본인인증 정보를 가져왔습니다.");
     setStatus("암호화된 본인인증 정보를 가져와 현재 저장 정보를 교체했습니다.");
   } catch (error) {
-    setStatus("본인인증 정보 JSON 또는 비밀번호가 올바르지 않습니다.", true);
+    const message = "본인인증 정보 JSON 또는 비밀번호가 올바르지 않습니다.";
+    setIdentityTransferStatus(message, true);
+    setStatus(message, true);
+  } finally {
+    importButton.disabled = false;
   }
 }
 
@@ -819,8 +858,30 @@ async function handleCopyCode() {
     return;
   }
 
-  await navigator.clipboard.writeText(textarea.value);
-  setStatus("설정 JSON을 클립보드에 복사했습니다.");
+  try {
+    await copyTextToClipboard(textarea.value, textarea);
+    setStatus("설정 JSON을 클립보드에 복사했습니다.");
+  } catch (error) {
+    textarea.focus();
+    textarea.select();
+    setStatus("자동 복사가 차단됐습니다. 선택된 JSON을 Ctrl+C로 복사하세요.", true);
+  }
+}
+
+async function copyTextToClipboard(value, fallbackElement) {
+  try {
+    await navigator.clipboard.writeText(value);
+    return;
+  } catch (error) {
+    fallbackElement.focus();
+    fallbackElement.select();
+
+    if (document.execCommand("copy")) {
+      return;
+    }
+
+    throw error;
+  }
 }
 
 async function handleImportCode() {
@@ -948,6 +1009,11 @@ function setStatus(message, isError = false) {
 function setIdentityProfileStatus(message, isError = false) {
   identityProfileStatus.textContent = message;
   identityProfileStatus.style.color = isError ? "#b42318" : "";
+}
+
+function setIdentityTransferStatus(message, isError = false) {
+  identityTransferStatus.textContent = message;
+  identityTransferStatus.style.color = isError ? "#b42318" : "";
 }
 
 function handleError(error) {

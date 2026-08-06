@@ -1,6 +1,6 @@
 {
   "name": "keyremap-advanced-autofill",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "packageManager": "pnpm@11.16.0",
   "scripts": {

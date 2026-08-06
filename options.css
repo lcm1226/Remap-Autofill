@@ -183,6 +183,11 @@ textarea {
   margin: 0 2px;
 }
 
+.identity-transfer-status {
+  min-height: 20px;
+  margin: 0 2px;
+}
+
 .identity-profile-form .field.field-invalid > span {
   color: var(--danger);
 }
@@ -300,6 +305,11 @@ button {
   cursor: pointer;
   font: inherit;
   font-weight: 700;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
 }
 
 button.primary {

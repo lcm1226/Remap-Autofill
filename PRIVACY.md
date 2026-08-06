@@ -28,6 +28,8 @@ Identity-verification profiles are not sent to the open-signal service or to ano
 
 Identity-profile transfer is separate from ordinary settings transfer. The extension derives an encryption key from the user-entered export password with PBKDF2-SHA-256 and encrypts the export with AES-GCM. The password and derived key are not stored. Routine device-local profile storage is not protected by this export password, so users must also protect their operating-system and Chrome profile access.
 
+The extension writes exported JSON to the clipboard only when the user explicitly clicks a copy button. It does not read clipboard contents.
+
 ## Optional Gmail open-signal transmission
 
 The Gmail open-signal feature transmits nothing until the user explicitly clicks `열람 신호` for an individual message. The first per-message opt-in activates the documented default service; users can later disable the feature or change the service in extension options. For a tracked message:

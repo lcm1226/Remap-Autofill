@@ -43,6 +43,10 @@ Stores user-created autofill rules, URL patterns, selectors, keyboard remap rule
 
 Reads the current active tab URL for rule suggestions in the popup and sends messages to the active tab when the user starts field picking or runs autofill manually.
 
+### `clipboardWrite`
+
+Copies ordinary settings JSON or password-encrypted identity-profile JSON only after the user explicitly clicks the corresponding copy button. The extension does not read clipboard contents.
+
 ### `http://*/*` and `https://*/*`
 
 Required so the extension can:
@@ -85,4 +89,3 @@ Suggested review flow:
 3. Click an input or dropdown on the page, return to the popup, enter a value, and save the rule.
 4. Click `지금 자동입력 실행` to confirm the saved value is applied.
 5. For key remap testing, open Gmail and confirm the included preset maps `Delete` to `Shift+3`.
-
