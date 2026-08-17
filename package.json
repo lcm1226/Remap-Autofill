@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node --test ./tracking-service/open-signal-store.test.mjs ./tracking-service/background-open-signal.test.mjs ./tracking-service/identity-autofill.test.mjs",
     "verify-fast": "node --check ./background.js && node --check ./content.js && node --check ./gmail-tracking.js && node --check ./identity-profile.js && node --check ./identity-transfer.js && node --check ./identity-adapters.js && node --check ./identity-autofill.js && node --check ./options.js && node --check ./popup.js && node --check ./tracking-service/cloudflare/worker.mjs && node --test ./tracking-service/open-signal-store.test.mjs ./tracking-service/background-open-signal.test.mjs ./tracking-service/identity-autofill.test.mjs",
+    "release:build": "powershell -ExecutionPolicy Bypass -File ./scripts/build-release.ps1",
     "open-signal:local": "node ./tracking-service/start-local.mjs",
     "open-signal:deploy": "node ./tracking-service/cloudflare/run-wrangler.mjs",
     "open-signal:deploy:temporary": "node ./tracking-service/cloudflare/run-wrangler.mjs --temporary"

@@ -2,6 +2,10 @@
 
 Prepared on: 2026-04-18
 
+Status reviewed: 2026-08-18
+
+> Draft only. The extension has not been submitted to the Chrome Web Store. The listing copy and screenshots must be reviewed against version `1.2.1` before any future submission.
+
 ## Store listing assets
 
 - Extension icon: `store-assets/icons/icon-128.png`

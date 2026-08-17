@@ -1,5 +1,10 @@
 # Progress
 
+## 2026-08-18
+
+- Audited the public `lcm1226/Remap-Autofill` repository and local checkout. The public default branch was still `main` at `67adef1`, while the tested `1.2.1` source was on `agent/add-open-signals-and-identity-autofill` at `c907109`; the repository had no topics, tags, releases, or PRs. Confirmed that the feature branch README contains no machine-specific absolute path, while the old public `main` README still named one.
+- Corrected release packaging before publication: the ZIP builder had omitted the Gmail tracking and identity-autofill runtime files referenced by the manifest. Added every missing runtime file and a `pnpm run release:build` command. Updated README/TODO/store-submission status to distinguish verified behavior, remaining live checks, unpacked installation, GitHub Release status, and the explicitly deferred Chrome Web Store submission.
+
 ## 2026-08-06
 
 - Fixed the encrypted identity-transfer controls appearing unresponsive in version 1.2.1. Export/import progress, validation errors, and completion messages now appear directly below the transfer buttons instead of only in the distant page footer; busy buttons are temporarily disabled; clipboard writes use the declared `clipboardWrite` permission, fall back to the legacy copy command, and finally select the JSON with explicit `Ctrl+C` guidance if automatic copying is blocked. The same resilient clipboard helper now protects ordinary settings JSON copying. The AES-GCM/PBKDF2 payload format and device-local profile behavior are unchanged.
